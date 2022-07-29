@@ -12,7 +12,7 @@ template <class T>
 class threadpool
 {
 public:
-    threadpool(int thread_number = 8, int max_requests = 1000);
+    threadpool(int thread_number = 8, int max_requests = 10000);
     ~threadpool();
     bool append(T *request);
 
@@ -49,7 +49,7 @@ threadpool<T>::threadpool(int thread_number, int max_requests) : m_thread_number
 {
     if ((thread_number <= 0) || (max_requests <= 0))
     {
-        return std::exception();
+        throw std::exception();
     }
 
     m_threads = new pthread_t[m_thread_number];
@@ -61,7 +61,7 @@ threadpool<T>::threadpool(int thread_number, int max_requests) : m_thread_number
     //创建thread_number个线程，并将他们设置为线程脱离
     for (size_t i = 0; i < thread_number; i++)
     {
-        printf("create the %dth thread", i);
+        printf("create the %d th thread\n", i);
 
         if (pthread_create(m_threads + i, NULL, worker, this) != 0)
         {
@@ -103,7 +103,8 @@ bool threadpool<T>::append(T *request)
 template <class T>
 void *threadpool<T>::worker(void *arg)
 {
-    threadpool *pool = (threadpool)*arg;
+    // threadpool *pool = (threadpool*)arg;
+    threadpool<T> *pool = (threadpool<T>*)arg;
     pool->run();
     return pool;
 }

@@ -13,3 +13,6 @@
 
 ![image-20220729215612554](https://cdn.jsdelivr.net/gh/zhou-ning/blog-image-bed@main/Linux/image-20220729215612554.png)
 
+## 第三课
+
+学习了http get请求如何进行解析，只应对了很简单的请求许多情况都没有进行处理

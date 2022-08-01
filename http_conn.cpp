@@ -15,6 +15,7 @@ const char *error_500_form = "There was an unusual problem serving the requested
 
 int http_conn::m_epollfd = -1;
 int http_conn::m_user_count = 0;
+sort_timer_lst<http_conn> http_conn::timer_lst;
 
 // 设置文件描述符非阻塞
 void setnonblocking(int fd)
@@ -29,9 +30,8 @@ void addfd(int epollfd, int fd, bool one_shot)
 {
     epoll_event event;
     event.data.fd = fd;
-    // event.events = EPOLLIN | EPOLLRDHUP;
     event.events = EPOLLIN | EPOLLRDHUP;
-
+    // event.events = EPOLLIN | EPOLLET;
     if (one_shot)
     {
         event.events |= EPOLLONESHOT;
